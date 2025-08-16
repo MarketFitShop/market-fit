@@ -1,0 +1,137 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f5faff;
+  color: #222;
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background-color: #0077cc;
+  padding: 1rem;
+}
+
+nav {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #d1e9ff;
+}
+
+main.producto-detalle {
+  display: flex;
+  gap: 3rem;
+  max-width: 900px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+}
+
+.producto-img img {
+  max-width: 350px;
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+.producto-info {
+  flex: 1;
+}
+
+.producto-info h1 {
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #0077cc;
+}
+
+.precio {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #009933;
+  margin-bottom: 1rem;
+}
+
+.descripcion {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #444;
+}
+
+.producto-info ul {
+  list-style: disc inside;
+  margin-bottom: 1.5rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.form-cantidad {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.form-cantidad label {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.form-cantidad input[type="number"] {
+  width: 60px;
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.form-cantidad input[type="number"]:focus {
+  outline: none;
+  border-color: #0077cc;
+}
+
+.btn-primary {
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #005fa3;
+}
+
+footer {
+  background-color: #003d66;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+  font-size: 0.9rem;
+}

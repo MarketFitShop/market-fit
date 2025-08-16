@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Market Fit</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <a href="#productos">Productos</a>
+    <a href="#beneficios">Beneficios</a>
+    <a href="#contacto">Contacto</a>
+    <a href="carrito.html" id="verCarritoBtn">Carrito (<span id="cart-count">0</span>)</a>
+    <img src="logo_empresa.png" alt="Logo" id="miLogo" />
+
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="hero-texto">
+      <h1 class="fade-in">Entrena con lo mejor</h1>
+      <h2 class="fade-in delay-1">Entrena con <span>Market Fit</span></h2>
+      <p class="fade-in delay-2">Equipamiento fitness premium, diseñado para tus metas</p>
+      <a href="#productos" class="btn-primary fade-in delay-3">Ver productos</a>
+    </div>
+  </section>
+
+  <section id="productos" class="productos">
+    <h2>Productos Destacados</h2>
+    <div class="productos-grid">
+
+      <div class="producto-card hover-scale">
+        <img src="bandas.png" alt="Bandas Elásticas" />
+        <h3>Bandas Elásticas</h3>
+        <p>Resistencia ajustable</p>
+        <p class="precio">5,99 € - 33,60 €</p>
+        <a href="bandas.html"><button class="btn-primary btn-comprar">Comprar</button></a>
+      </div>
+
+      <div class="producto-card hover-scale">
+        <img src="Rueda.png" alt="Rueda Abdominal" />
+        <h3>Rueda Abdominal</h3>
+        <p>Fortalece tu core</p>
+        <p class="precio">9,99 €</p>
+        <a href="rueda.html"><button class="btn-primary btn-comprar">Comprar</button></a>
+      </div>
+
+      <div class="producto-card hover-scale">
+        <img src="guantes.png" alt="Guantes de Gimnasio" />
+        <h3>Guantes de Gimnasio</h3>
+        <p>Protección y agarre</p>
+        <p class="precio">6,30 €</p>
+        <a href="guantes.html"><button class="btn-primary btn-comprar">Comprar</button></a>
+      </div>
+
+      <div class="producto-card hover-scale">
+        <img src="esterilla.png" alt="Esterilla Fitness" />
+        <h3>Esterilla Fitness</h3>
+        <p>Antideslizante y cómoda</p>
+        <p class="precio">7,80 €</p>
+        <a href="esterilla.html"><button class="btn-primary btn-comprar">Comprar</button></a>
+      </div>
+
+      <div class="producto-card hover-scale">
+        <img src="Shaker.png" alt="Botella Shaker" class="img-shaker"/>
+        <h3>Botella Shaker</h3>
+        <p>Ideal para tus batidos</p>
+        <p class="precio">8,20 €</p>
+        <a href="shaker.html"><button class="btn-primary btn-comprar">Comprar</button></a>
+      </div>
+
+    </div>
+  </section>
+
+<section id="beneficios" class="beneficios">
+  <h2>¿Por qué elegir Market Fit?</h2>
+  <div class="beneficios-grid">
+    <div class="beneficio-card hover-scale">
+      <i class="fas fa-tags"></i>
+      <h3>Precios Competitivos</h3>
+      <p>Calidad a precios accesibles.</p>
+    </div>
+    <div class="beneficio-card hover-scale">
+      <i class="fas fa-check-circle"></i>
+      <h3>Selección Verificada</h3>
+      <p>Solo productos bien valorados.</p>
+    </div>
+    <div class="beneficio-card hover-scale">
+      <i class="fas fa-globe"></i>
+      <h3>Envío Seguro</h3>
+      <p>Envíos con seguimiento en 7-15 días.</p>
+    </div>
+    <div class="beneficio-card hover-scale">
+      <i class="fas fa-shield-alt"></i>
+      <h3>Compra Protegida</h3>
+      <p>Garantía de devolución y reembolso.</p>
+    </div>
+    <div class="beneficio-card hover-scale">
+      <i class="fas fa-headset"></i>
+      <h3>Atención Personalizada</h3>
+      <p>Resolvemos tus dudas por email o por la web contactandonos.</p>
+    </div>
+    <div class="beneficio-card hover-scale">
+      <i class="fas fa-sync-alt"></i>
+      <h3>Catálogo Actualizado</h3>
+      <p>Nuevos productos cada mes.</p>
+    </div>
+    <div class="beneficio-card hover-scale">
+      <i class="fas fa-info-circle"></i>
+      <h3>Transparencia Total</h3>
+      <p>Información clara de cada artículo.</p>
+    </div>
+    <div class="beneficio-card hover-scale">
+      <i class="fas fa-users"></i>
+      <h3>Comunidad Fit</h3>
+      <p>Únete a nuestros clientes activos.</p>
+    </div>
+  </div>
+</section>
+
+
+  <section id="contacto" class="contacto">
+    <h2>Contáctanos</h2>
+    <form action="index.php" method="POST" class="contact-form">
+      <input type="text" name="nombre" placeholder="Nombre" required />
+      <input type="text" name="apellido" placeholder="Apellido" required />
+      <input type="email" name="email" placeholder="Correo electrónico" required />
+      <textarea name="mensaje" placeholder="Motivo del mensaje" required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+
+
+  <script src="script.js"></script>
+
+  <footer class="footer">
+  <p>© 2025 Market Fit. Todos los derechos reservados.</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bandas Elásticas - Market Fit</title>
+  <link rel="stylesheet" href="producto.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="index.html#productos">Productos</a>
+      <a href="index.html#beneficios">Beneficios</a>
+      <a href="index.html#contacto">Contacto</a>
+      <a href="carrito.html" id="carritoLink">Carrito (0)</a>
+    </nav>
+  </header>
+
+  <main class="producto-detalle">
+    <div class="producto-img">
+      <img id="productoImagen" src="bandas.png" alt="Bandas Elásticas - Portada" />
+    </div>
+    <div class="producto-info">
+      <h1 id="productoNombre">Bandas Elásticas - Portada</h1>
+      <p class="precio" id="productoPrecio">33,60 €</p>
+      <p class="descripcion" id="productoDescripcion">
+        Conjunto de bandas con distintos niveles de resistencia. Perfectas para entrenar glúteos, piernas, brazos y más.
+      </p>
+
+      <form id="formCarrito" class="form-cantidad">
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" name="cantidad" value="1" min="1" max="99" required />
+        <button type="submit" class="btn-primary">Añadir al carrito</button>
+      </form>
+
+      <div style="margin-top: 1rem;">
+        <button type="button" id="btnAnterior" class="btn-primary" style="background-color:#005fa3; margin-right: 1rem;">Anterior</button>
+        <button type="button" id="btnSiguiente" class="btn-primary" style="background-color:#005fa3;">Siguiente</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Market Fit. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    const productos = [
+      {
+        src: 'bandas.png',
+        alt: 'Bandas Elásticas - Portada',
+        desc: 'Conjunto de bandas con distintos niveles de resistencia. Perfectas para entrenar glúteos, piernas, brazos y más.',
+        precio: 33.60
+      },
+      {
+        src: 'banda_verde.png',
+        alt: 'Banda Verde - Resistencia Alta',
+        desc: 'Banda verde con resistencia alta. Recomendable para usuarios avanzados.',
+        precio: 10.99
+      },
+      {
+        src: 'banda_lila.png',
+        alt: 'Banda Azul - Resistencia Extra',
+        desc: 'Banda azul con resistencia extra alta para entrenamientos intensos.',
+        precio: 9.90
+      },
+      {
+        src: 'banda_negra.png',
+        alt: 'Banda Negra - Resistencia Máxima',
+        desc: 'Banda negra con la máxima resistencia. Para ejercicios muy exigentes.',
+        precio: 7.50
+      },
+      {
+        src: 'banda_roja.png',
+        alt: 'Banda Roja - Resistencia Baja',
+        desc: 'Banda roja con resistencia baja. Ideal para principiantes y estiramientos suaves.',
+        precio: 5.99
+      },
+      {
+        src: 'banda_amarilla.png',
+        alt: 'Banda Amarilla - Resistencia Media',
+        desc: 'Banda amarilla con resistencia media. Perfecta para ejercicios de fuerza moderada.',
+        precio: 8.00
+      }
+    ];
+
+    let indiceActual = 0;
+
+    const img = document.getElementById('productoImagen');
+    const nombre = document.getElementById('productoNombre');
+    const precio = document.getElementById('productoPrecio');
+    const descripcion = document.getElementById('productoDescripcion');
+
+    function mostrarProducto(indice) {
+      const p = productos[indice];
+      img.src = p.src;
+      img.alt = p.alt;
+      nombre.textContent = p.alt;
+      precio.textContent = p.precio.toFixed(2).replace('.', ',') + ' €';
+      descripcion.textContent = p.desc;
+    }
+
+    function actualizarCarritoHeader() {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+      const carritoLink = document.getElementById('carritoLink');
+      carritoLink.textContent = `Carrito (${totalCantidad})`;
+    }
+
+    function agregarAlCarrito(producto) {
+      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+      const index = carrito.findIndex(item => item.nombre === producto.nombre);
+      if (index !== -1) {
+        carrito[index].cantidad += producto.cantidad;
+      } else {
+        carrito.push(producto);
+      }
+
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      actualizarCarritoHeader();
+    }
+
+    document.getElementById('btnAnterior').addEventListener('click', () => {
+      indiceActual = (indiceActual - 1 + productos.length) % productos.length;
+      mostrarProducto(indiceActual);
+    });
+
+    document.getElementById('btnSiguiente').addEventListener('click', () => {
+      indiceActual = (indiceActual + 1) % productos.length;
+      mostrarProducto(indiceActual);
+    });
+
+    document.getElementById('formCarrito').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const cantidadInput = document.getElementById('cantidad');
+      const cantidad = parseInt(cantidadInput.value);
+
+      if (cantidad < 1 || cantidad > 99 || isNaN(cantidad)) {
+        alert("Introduce una cantidad válida (entre 1 y 99).");
+        return;
+      }
+
+      const productoActual = productos[indiceActual];
+
+      const productoParaCarrito = {
+        nombre: productoActual.alt,
+        precio: productoActual.precio,
+        imagen: productoActual.src,
+        cantidad: cantidad
+      };
+
+      agregarAlCarrito(productoParaCarrito);
+
+      alert(`Añadido al carrito: ${productoParaCarrito.nombre} (Cantidad: ${cantidad})`);
+
+      cantidadInput.value = 1;
+    });
+
+    // Inicializar al cargar
+    mostrarProducto(indiceActual);
+    actualizarCarritoHeader();
+  </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rueda Abdominal - Market Fit</title>
+  <link rel="stylesheet" href="producto.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="index.html#productos">Productos</a>
+      <a href="index.html#beneficios">Beneficios</a>
+      <a href="index.html#contacto">Contacto</a>
+      <a href="carrito.html" id="carritoLink">Carrito (0)</a>
+    </nav>
+  </header>
+
+  <main class="producto-detalle">
+    <div class="producto-img">
+      <img src="Rueda.png" alt="Rueda Abdominal" />
+    </div>
+    <div class="producto-info">
+      <h1>Rueda Abdominal</h1>
+      <p class="precio">9,99 €</p>
+      <p class="descripcion">
+        Rueda para fortalecer el core, brazos y espalda. Compacta, ligera y resistente.
+      </p>
+      <ul>
+        <li>Mango ergonómico antideslizante</li>
+        <li>Rueda de alta durabilidad</li>
+        <li>Diseño compacto</li>
+        <li>Perfecta para ejercicios en casa o gimnasio</li>
+      </ul>
+
+      <form class="form-cantidad" id="formAgregarCarrito">
+        <label for="cantidadRueda">Cantidad:</label> <!-- MEJORA: ID específico -->
+        <input
+          type="number"
+          id="cantidadRueda"
+          name="cantidad"
+          value="1"
+          min="1"
+          max="99"
+          required
+        />
+        <button type="submit" class="btn-primary">Añadir al carrito</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Market Fit. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    // Actualiza el contador del carrito en el menú
+    function actualizarCarritoHeader() {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+      const carritoLink = document.getElementById('carritoLink');
+      carritoLink.textContent = `Carrito (${totalCantidad})`;
+    }
+
+    // Añadir producto al carrito
+    function agregarAlCarrito(producto) {
+      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+      // Buscar si ya está el producto (por nombre)
+      const index = carrito.findIndex(item => item.nombre === producto.nombre);
+      if (index !== -1) {
+        carrito[index].cantidad += producto.cantidad;
+      } else {
+        carrito.push(producto);
+      }
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      actualizarCarritoHeader();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      actualizarCarritoHeader();
+
+      const form = document.getElementById('formAgregarCarrito');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const cantidadInput = document.getElementById('cantidadRueda');
+        const cantidad = parseInt(cantidadInput.value);
+
+        if (cantidad < 1 || cantidad > 99 || isNaN(cantidad)) {
+          alert('Por favor, introduce una cantidad válida entre 1 y 99.');
+          return;
+        }
+
+        const producto = {
+          nombre: "Rueda Abdominal",
+          precio: 9.99, // CORREGIDO: coincide con el precio mostrado
+          cantidad: cantidad,
+          imagen: "Rueda.png"
+        };
+
+        agregarAlCarrito(producto);
+        alert(`Añadido al carrito: ${producto.nombre} (x${producto.cantidad})`);
+        cantidadInput.value = '1'; // reset cantidad
+      });
+    });
+  </script>
+</body>
+</html>

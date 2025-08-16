@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Esterilla Fitness - Market Fit</title>
+  <link rel="stylesheet" href="producto.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="index.html#productos">Productos</a>
+      <a href="index.html#beneficios">Beneficios</a>
+      <a href="index.html#contacto">Contacto</a>
+      <a href="carrito.html">Carrito</a>
+    </nav>
+  </header>
+
+  <main class="producto-detalle">
+    <div class="producto-img">
+      <img src="esterilla.png" alt="Esterilla Fitness" />
+    </div>
+    <div class="producto-info">
+      <h1>Esterilla Fitness</h1>
+      <p class="precio">7,80 €</p>
+      <p class="descripcion">
+        Esterilla antideslizante y cómoda, ideal para yoga, pilates y ejercicios de suelo.
+      </p>
+      <ul>
+        <li>Superficie antideslizante</li>
+        <li>Espesor cómodo de 6 mm</li>
+        <li>Fácil de limpiar</li>
+        <li>Ligera y portátil</li>
+      </ul>
+
+      <form id="formCarrito" class="form-cantidad">
+        <label for="cantidad">Cantidad:</label>
+        <input
+          type="number"
+          id="cantidad"
+          name="cantidad"
+          value="1"
+          min="1"
+          max="99"
+          required
+        />
+        <button type="submit" class="btn-primary">Añadir al carrito</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Market Fit. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    // Datos del producto
+    const producto = {
+      nombre: "Esterilla Fitness",
+      precio: 7.80,
+      imagen: "esterilla.png"
+    };
+
+    // Actualiza el número de productos en el header
+    function actualizarCarritoHeader() {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+      const carritoLink = document.querySelector('a[href="carrito.html"]');
+      carritoLink.textContent = `Carrito (${totalCantidad})`;
+    }
+
+    // Maneja el envío del formulario
+    const form = document.getElementById('formCarrito');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const cantidadInput = document.getElementById('cantidad');
+      const cantidad = parseInt(cantidadInput.value);
+
+      if (cantidad < 1 || cantidad > 99 || isNaN(cantidad)) {
+        alert("Introduce una cantidad válida (entre 1 y 99).");
+        return;
+      }
+
+      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const index = carrito.findIndex(item => item.nombre === producto.nombre);
+
+      if (index !== -1) {
+        carrito[index].cantidad += cantidad;
+      } else {
+        carrito.push({
+          nombre: producto.nombre,
+          precio: producto.precio,
+          imagen: producto.imagen,
+          cantidad: cantidad
+        });
+      }
+
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      alert(`Añadido al carrito: ${producto.nombre} (Cantidad: ${cantidad})`);
+      cantidadInput.value = 1;
+      actualizarCarritoHeader();
+    });
+
+    // Al cargar la página, actualizar el contador del carrito
+    actualizarCarritoHeader();
+  </script>
+</body>
+</html>

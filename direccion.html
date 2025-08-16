@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dirección y pago</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h2 {
+      margin-top: 30px;
+      color: #2c3e50;
+    }
+    .resumen {
+      background-color: #e0e0e0;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+    .formulario {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .campo {
+      margin-bottom: 15px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .campo label {
+      flex-basis: 100%;
+      font-weight: bold;
+    }
+    .campo input,
+    .campo select {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .botones {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+    }
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    #confirmar {
+      background-color: #2ecc71;
+      color: white;
+    }
+    #volver {
+      background-color: #3498db;
+      color: white;
+    }
+
+    /* Añadido para scroll si hay muchas opciones */
+    select[name="prefijo"] {
+      max-height: 150px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Confirma tu pedido y dirección</h2>
+
+  <section class="resumen" id="resumenPedido" aria-label="Resumen del pedido">
+    <h3>Resumen del Pedido</h3>
+    <p>Cargando productos...</p>
+  </section>
+
+  <form class="formulario" id="formulario">
+    <h3>Información Personal</h3>
+    <div class="campo">
+      <input type="text" name="nombre" placeholder="Nombre" required />
+      <input type="text" name="apellido" placeholder="Apellido" required />
+      <select name="prefijo" required>
+        <option value="+34">🇪🇸 +34</option>
+        <option value="+33">🇫🇷 +33</option>
+        <option value="+351">🇵🇹 +351</option>
+        <option value="+1">🇺🇸 +1</option>
+        <option value="+44">🇬🇧 +44</option>
+        <option value="+49">🇩🇪 +49</option>
+        <option value="+39">🇮🇹 +39</option>
+        <option value="+90">🇹🇷 +90</option>
+        <option value="+212">🇲🇦 +212</option>
+        <option value="+213">🇩🇿 +213</option>
+        <option value="+216">🇹🇳 +216</option>
+        <option value="+86">🇨🇳 +86</option>
+        <option value="+81">🇯🇵 +81</option>
+        <option value="+91">🇮🇳 +91</option>
+      </select>
+      <input type="tel" name="telefono" placeholder="Número de teléfono" required pattern="[0-9]{9}" maxlength="9" />
+    </div>
+
+    <h3>Dirección</h3>
+    <div class="campo">
+      <input type="text" name="busqueda" placeholder="Buscar por código postal, calle, o dirección" />
+    </div>
+    <div class="campo">
+      <input type="text" name="calle" placeholder="Calle, casa/apartamento*" required />
+      <input type="text" name="apartamento" placeholder="Apto., suite, unidad, etc. (opcional)" />
+    </div>
+    <div class="campo">
+      <select name="provincia" required>
+        <option value="">Selecciona una provincia</option>
+        <option value="Barcelona">Barcelona</option>
+        <option value="Madrid">Madrid</option>
+        <option value="Valencia">Valencia</option>
+        <option value="Sevilla">Sevilla</option>
+        <option value="Tarragona">Tarragona</option>
+      </select>
+      <input type="text" name="municipio" placeholder="Municipio" required />
+      <input type="text" name="codigo_postal" placeholder="Código Postal" required />
+    </div>
+
+    <div class="campo">
+      <label for="email">Correo electrónico:</label>
+      <input type="email" name="email" placeholder="ejemplo@correo.com" required />
+    </div>
+    <div class="campo">
+      <label for="notas">Notas adicionales:</label>
+      <input type="text" name="notas" placeholder="Instrucciones o detalles..." />
+    </div>
+
+    <input type="hidden" name="productos_json" id="productosInput" />
+
+    <div class="botones">
+      <button type="submit" id="confirmar">Confirmar pedido</button>
+      <button type="button" id="volver" onclick="window.location.href='index.html'">Volver a la tienda</button>
+    </div>
+  </form>
+
+  <script>
+    const resumenDiv = document.getElementById("resumenPedido");
+    const inputProductos = document.getElementById("productosInput");
+    const confirmarBtn = document.getElementById("confirmar");
+
+    const carritoGuardado = JSON.parse(localStorage.getItem("carritoPago"));
+
+    if (!carritoGuardado || !Array.isArray(carritoGuardado.productos) || carritoGuardado.productos.length === 0) {
+      resumenDiv.innerHTML = "<p>No hay productos en el carrito.</p>";
+      confirmarBtn.disabled = true;
+    } else {
+      let html = "<ul>";
+      carritoGuardado.productos.forEach(item => {
+        // Limpiar el nombre para quitar texto después de " - "
+        const nombreLimpio = item.nombre.split(" - ")[0].trim();
+
+        const subtotal = (item.precio * item.cantidad).toFixed(2);
+        html += `<li><strong>${nombreLimpio}</strong><br>Precio: ${item.precio.toFixed(2)}€<br>Cantidad: ${item.cantidad}<br>Total: ${subtotal}€</li><br>`;
+      });
+      html += "</ul>";
+      html += `<strong>Total: ${carritoGuardado.total.toFixed(2)}€</strong>`;
+
+      resumenDiv.innerHTML = html;
+      inputProductos.value = JSON.stringify(carritoGuardado.productos);
+    }
+
+    document.getElementById("formulario").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      confirmarBtn.disabled = true;
+      confirmarBtn.textContent = "Procesando...";
+
+      const formData = new FormData(this);
+
+      fetch('guardar_pedido.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "ok") {
+          window.location.href = data.url_pago_stripe;
+        } else {
+          alert('Error al guardar el pedido: ' + data.message);
+          confirmarBtn.disabled = false;
+          confirmarBtn.textContent = "Confirmar pedido";
+        }
+      })
+      .catch(() => {
+        alert('Error en la comunicación con el servidor.');
+        confirmarBtn.disabled = false;
+        confirmarBtn.textContent = "Confirmar pedido";
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carrito - Market Fit</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    #productos-carrito ul {
+      list-style: none;
+      padding: 0;
+    }
+    #productos-carrito li {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      gap: 15px;
+    }
+    #productos-carrito img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+    .info-producto {
+      flex-grow: 1;
+    }
+    .btn-eliminar {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    #btnPagar {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #2c7be5;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html#productos">Productos</a>
+    <a href="index.html#beneficios">Beneficios</a>
+    <a href="index.html#contacto">Contacto</a>
+    <a href="carrito.html" id="carritoLink">Carrito (0)</a>
+  </header>
+
+  <section class="carrito">
+    <h2>Tu Carrito de Compra</h2>
+    <div id="productos-carrito"></div>
+    <button id="btnPagar">Proceder al Pago</button>
+  </section>
+
+  <script>
+    // Actualiza el texto del enlace del carrito en el header con la cantidad total
+    function actualizarCarritoHeader() {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+      const carritoLink = document.getElementById('carritoLink');
+      if (carritoLink) {
+        carritoLink.textContent = `Carrito (${totalCantidad})`;
+      }
+    }
+
+    // Mostrar los productos guardados en el carrito
+    function mostrarCarrito() {
+      const contenedor = document.getElementById('productos-carrito');
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+      if (carrito.length === 0) {
+        contenedor.innerHTML = '<p>No has añadido productos al carrito.</p>';
+        return;
+      }
+
+      let html = '<ul>';
+      carrito.forEach((item, index) => {
+        html += `
+          <li>
+            <img src="${item.imagen}" alt="${item.nombre}" />
+            <div class="info-producto">
+              <strong>${item.nombre}</strong><br />
+              Cantidad: ${item.cantidad}<br />
+              Precio unitario: ${item.precio.toFixed(2)} €<br />
+              Subtotal: ${(item.precio * item.cantidad).toFixed(2)} €
+            </div>
+            <button class="btn-eliminar" data-index="${index}">Eliminar</button>
+          </li>
+        `;
+      });
+      html += '</ul>';
+      contenedor.innerHTML = html;
+
+      // Añadir evento a botones eliminar
+      document.querySelectorAll('.btn-eliminar').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const index = parseInt(btn.getAttribute('data-index'));
+          carrito.splice(index, 1);
+          localStorage.setItem('carrito', JSON.stringify(carrito));
+          mostrarCarrito();
+          actualizarCarritoHeader();
+        });
+      });
+    }
+
+    // Evento para botón proceder al pago
+    document.getElementById('btnPagar').addEventListener('click', () => {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+      if (carrito.length === 0) {
+        alert("Tu carrito está vacío.");
+        return;
+      }
+
+      const total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+      const carritoPago = { productos: carrito, total };
+      localStorage.setItem("carritoPago", JSON.stringify(carritoPago));
+      window.location.href = "direccion.html"; // Aquí la página de pago o dirección
+    });
+
+    // Al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      mostrarCarrito();
+      actualizarCarritoHeader();
+    });
+  </script>
+
+</body>
+</html>

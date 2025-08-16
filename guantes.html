@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guantes de Gimnasio - Market Fit</title>
+  <link rel="stylesheet" href="producto.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="index.html#productos">Productos</a>
+      <a href="index.html#beneficios">Beneficios</a>
+      <a href="index.html#contacto">Contacto</a>
+      <a href="carrito.html">Carrito</a>
+    </nav>
+  </header>
+
+  <main class="producto-detalle">
+    <div class="producto-img">
+      <img src="guantes.png" alt="Guantes de Gimnasio" />
+    </div>
+    <div class="producto-info">
+      <h1>Guantes de Gimnasio</h1>
+      <p class="precio">6,30 €</p>
+      <p class="descripcion">
+        Guantes cómodos para proteger tus manos y mejorar el agarre durante el entrenamiento.
+      </p>
+      <ul>
+        <li>Material transpirable</li>
+        <li>Refuerzo en palmas</li>
+        <li>Ajuste con velcro</li>
+        <li>Ideal para pesas y máquinas</li>
+      </ul>
+
+      <form id="formCarrito" class="form-cantidad">
+        <label for="cantidad">Cantidad:</label>
+        <input
+          type="number"
+          id="cantidad"
+          name="cantidad"
+          value="1"
+          min="1"
+          max="99"
+          required
+        />
+        <button type="submit" class="btn-primary">Añadir al carrito</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Market Fit. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    const producto = {
+      nombre: "Guantes de Gimnasio",
+      precio: 6.30,
+      imagen: "guantes.png"
+    };
+
+    function actualizarCarritoHeader() {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+      const carritoLink = document.querySelector('a[href="carrito.html"]');
+      if (carritoLink) {
+        carritoLink.textContent = `Carrito (${totalCantidad})`;
+      }
+    }
+
+    const form = document.getElementById('formCarrito');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const cantidadInput = document.getElementById('cantidad');
+      const cantidad = parseInt(cantidadInput.value);
+
+      if (cantidad < 1 || cantidad > 99 || isNaN(cantidad)) {
+        alert("Introduce una cantidad válida (entre 1 y 99).");
+        return;
+      }
+
+      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const index = carrito.findIndex(item => item.nombre === producto.nombre);
+
+      if (index !== -1) {
+        carrito[index].cantidad += cantidad;
+      } else {
+        carrito.push({
+          nombre: producto.nombre,
+          precio: producto.precio,
+          imagen: producto.imagen,
+          cantidad: cantidad
+        });
+      }
+
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      alert(`Añadido al carrito: ${producto.nombre} (Cantidad: ${cantidad})`);
+      cantidadInput.value = 1;
+      actualizarCarritoHeader();
+    });
+
+    document.addEventListener('DOMContentLoaded', actualizarCarritoHeader);
+  </script>
+</body>
+</html>

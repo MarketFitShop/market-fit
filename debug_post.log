@@ -1,0 +1,34 @@
+2025-07-13 17:59:21 - POST: Array
+(
+    [nombre] => Ilyas
+    [apellido] => Amraoui
+    [prefijo] => +34
+    [telefono] => 624263967
+    [busqueda] => Calle alcover 1r 1ra
+    [calle] => c
+    [apartamento] => 
+    [provincia] => Tarragona
+    [municipio] => c
+    [codigo_postal] => 43203
+    [email] => ilyasamraoui766@gmail.com
+    [notas] => 
+    [productos_json] => [{"nombre":"Bandas Elásticas - Portada","precio":33.6,"imagen":"bandas.png","cantidad":1},{"nombre":"Banda Verde - Resistencia Alta","precio":10.99,"imagen":"banda_verde.png","cantidad":1},{"nombre":"Banda Azul - Resistencia Extra","precio":9.9,"imagen":"banda_lila.png","cantidad":1},{"nombre":"Banda Negra - Resistencia Máxima","precio":7.5,"imagen":"banda_negra.png","cantidad":1}]
+)
+
+2025-07-13 18:00:25 - POST: Array
+(
+    [nombre] => Ilyas
+    [apellido] => Amraoui
+    [prefijo] => +34
+    [telefono] => 624263967
+    [busqueda] => Calle alcover 1r 1ra
+    [calle] => carrer alcover
+    [apartamento] => 
+    [provincia] => Tarragona
+    [municipio] => BARCELONA
+    [codigo_postal] => 43203
+    [email] => ilyasamraoui766@gmail.com
+    [notas] => 
+    [productos_json] => [{"nombre":"Banda Verde - Resistencia Alta","precio":10.99,"imagen":"banda_verde.png","cantidad":2},{"nombre":"Bandas Elásticas - Portada","precio":33.6,"imagen":"bandas.png","cantidad":1},{"nombre":"Banda Azul - Resistencia Extra","precio":9.9,"imagen":"banda_lila.png","cantidad":1}]
+)
+

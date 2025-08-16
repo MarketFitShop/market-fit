@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Botella Shaker - Market Fit</title>
+  <link rel="stylesheet" href="producto.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="index.html#productos">Productos</a>
+      <a href="index.html#beneficios">Beneficios</a>
+      <a href="index.html#contacto">Contacto</a>
+      <a href="carrito.html" id="carritoLink">Carrito (0)</a> <!-- ID añadido para actualizar contador -->
+    </nav>
+  </header>
+
+  <main class="producto-detalle">
+    <div class="producto-img">
+      <img src="shaker.png" alt="Botella Shaker" />
+    </div>
+    <div class="producto-info">
+      <h1>Botella Shaker</h1>
+      <p class="precio">8,20 €</p>
+      <p class="descripcion">
+        Botella mezcladora con compartimento para proteína, ideal para tus batidos post-entreno.
+      </p>
+      <ul>
+        <li>Capacidad 600 ml</li>
+        <li>Tapa segura y fácil de limpiar</li>
+        <li>Material libre de BPA</li>
+        <li>Apta para lavavajillas</li>
+      </ul>
+
+      <form class="form-cantidad" id="formAgregarCarrito">
+        <label for="cantidadShaker">Cantidad:</label> <!-- Cambiado id por cantidadShaker -->
+        <input
+          type="number"
+          id="cantidadShaker"
+          name="cantidad"
+          value="1"
+          min="1"
+          max="99"
+          required
+        />
+        <button type="submit" class="btn-primary">Añadir al carrito</button>
+      </form>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Market Fit. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    function actualizarCarritoHeader() {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+      const carritoLink = document.getElementById('carritoLink');
+      if (carritoLink) {
+        carritoLink.textContent = `Carrito (${totalCantidad})`;
+      }
+    }
+
+    function agregarAlCarrito(producto) {
+      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const index = carrito.findIndex(item => item.nombre === producto.nombre);
+      if (index !== -1) {
+        carrito[index].cantidad += producto.cantidad;
+      } else {
+        carrito.push(producto);
+      }
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      actualizarCarritoHeader();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      actualizarCarritoHeader();
+
+      const form = document.getElementById('formAgregarCarrito');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const cantidadInput = document.getElementById('cantidadShaker');
+        const cantidad = parseInt(cantidadInput.value);
+
+        if (cantidad < 1 || cantidad > 99 || isNaN(cantidad)) {
+          alert('Introduce una cantidad válida (1-99).');
+          return;
+        }
+
+        const producto = {
+          nombre: 'Botella Shaker',
+          precio: 8.20,  // Precio corregido para coincidir con el mostrado
+          cantidad: cantidad,
+          imagen: 'shaker.png'
+        };
+
+        agregarAlCarrito(producto);
+        alert(`Añadido al carrito: ${producto.nombre} (x${producto.cantidad})`);
+        cantidadInput.value = '1'; // reset cantidad
+      });
+    });
+  </script>
+</body>
+</html>
